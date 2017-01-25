@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+
 import webapp2
 from helpers import alphabet_position, rotate_character, encrypt
 import cgi
@@ -34,6 +36,12 @@ page_footer = """
 </body>
 </html>
 """
+
+# TODO: use only the original files to implement the encryption function
+
+# TODO: simplify the form area
+
+# TODO: (optional) Make the page look nicer
 
 lowercase = "abcdefghijklmnopqrstuvwxyz"
 uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -56,6 +64,7 @@ class Index(webapp2.RequestHandler):
 
         self.response.write(content)
 
+# TODO: Put this in a post method in the Index class
 class Rotate(webapp2.RequestHandler):
     def post(self):
         originalMessage = self.request.get("plain_text")
