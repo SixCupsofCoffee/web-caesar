@@ -16,6 +16,7 @@
 #
 import webapp2
 from helpers import alphabet_position, rotate_character, encrypt
+import cgi
 
 # html boilerplate for the top of every page
 page_header = """
@@ -42,7 +43,7 @@ class Index(webapp2.RequestHandler):
         addForm = """
         <form action="/rotate" method="post">
             <label>
-                Enter the text you'd like to encipher: <input type="text" name="plain_text"/>
+                Enter the text you'd like to encipher: <input type="textarea" name="plain_text"/>
             </label><br>
             <label>
                 Enter the amount of characters to rotate by: <input type="text" name="rot_amount"/>
@@ -63,8 +64,9 @@ class Rotate(webapp2.RequestHandler):
         rotAmount = int(rotAmount)
 
         encryptedMessage = encrypt(originalMessage, rotAmount)
+        escapedMessage = cgi.escape(encryptedMessage)
 
-        message = page_header + "<h3>Encryption Completed</h3>" + "<em><b>Your message is: </b></em>" + encryptedMessage + page_footer
+        message = page_header + "<h3>Encryption Completed</h3>" + "<em><b>Your message is: </b></em>" + escapedMessage + page_footer
 
         self.response.write(message)
 
