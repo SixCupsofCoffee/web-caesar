@@ -37,8 +37,6 @@ page_footer = """
 </html>
 """
 
-# TODO: use only the original files to implement the encryption function
-
 # TODO: (optional) Make the page look nicer
 
 def buildPage(textAreaText):
@@ -47,7 +45,7 @@ def buildPage(textAreaText):
         <label>Enter the text you'd like to encipher: </label>
         <br>
         <textarea name="plain_text"/>
-        """
+"""
     textAreaEnd = "</textarea><br>"
     rotEntryArea = """
         <label>Enter the amount of characters to rotate by: </label>
@@ -61,18 +59,6 @@ def buildPage(textAreaText):
     form = page_header + formCreate + cipherArea + textAreaText + textAreaEnd + rotEntryArea + submit + formEnd + page_footer
 
     return form
-
-#addForm = """
-#    <form method="post">
-#        <label>
-#            Enter the text you'd like to encipher: <textarea name="plain_text"/>" + escapedMess</textarea>
-#        </label><br>
-#        <label>
-#            Enter the amount of characters to rotate by: <input type="text" name="rot_amount"/>
-#        </label><br>
-#        <input type="submit">
-#    </form>
-#    """
 
 class Index(webapp2.RequestHandler):
     def get(self):
@@ -90,7 +76,6 @@ class Index(webapp2.RequestHandler):
         content = buildPage(escapedMessage)
 
         self.response.write(content)
-
 
 app = webapp2.WSGIApplication([
     ('/', Index)
