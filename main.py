@@ -17,7 +17,7 @@
 
 
 import webapp2
-from helpers import alphabet_position, rotate_character, encrypt
+from helpers import encrypt
 import cgi
 
 # html boilerplate for the top of every page
@@ -39,33 +39,46 @@ page_footer = """
 
 # TODO: use only the original files to implement the encryption function
 
-# TODO: simplify the form area
-
 # TODO: (optional) Make the page look nicer
 
-lowercase = "abcdefghijklmnopqrstuvwxyz"
-uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+def buildPage(textAreaText):
+    formCreate = "<form method='post'>"
+    cipherArea = """
+        <label>Enter the text you'd like to encipher: </label>
+        <br>
+        <textarea name="plain_text"/>
+        """
+    textAreaEnd = "</textarea><br>"
+    rotEntryArea = """
+        <label>Enter the amount of characters to rotate by: </label>
+        <br>
+        <input type="text" name="rot_amount"/>
+        <br>
+        """
+    submit = "<input type='submit'>"
+    formEnd = "</form>"
+
+    form = page_header + formCreate + cipherArea + textAreaText + textAreaEnd + rotEntryArea + submit + formEnd + page_footer
+
+    return form
+
+#addForm = """
+#    <form method="post">
+#        <label>
+#            Enter the text you'd like to encipher: <textarea name="plain_text"/>" + escapedMess</textarea>
+#        </label><br>
+#        <label>
+#            Enter the amount of characters to rotate by: <input type="text" name="rot_amount"/>
+#        </label><br>
+#        <input type="submit">
+#    </form>
+#    """
 
 class Index(webapp2.RequestHandler):
     def get(self):
-        addForm = """
-        <form action="/rotate" method="post">
-            <label>
-                Enter the text you'd like to encipher: <input type="textarea" name="plain_text"/>
-            </label><br>
-            <label>
-                Enter the amount of characters to rotate by: <input type="text" name="rot_amount"/>
-            </label><br>
-            <input type="submit" value="Encipher"/>
-        </form>
-        """
-
-        content = page_header + addForm + page_footer
-
+        content = buildPage("")
         self.response.write(content)
 
-# TODO: Put this in a post method in the Index class
-class Rotate(webapp2.RequestHandler):
     def post(self):
         originalMessage = self.request.get("plain_text")
         rotAmount = self.request.get("rot_amount")
@@ -74,13 +87,11 @@ class Rotate(webapp2.RequestHandler):
 
         encryptedMessage = encrypt(originalMessage, rotAmount)
         escapedMessage = cgi.escape(encryptedMessage)
+        content = buildPage(escapedMessage)
 
-        message = page_header + "<h3>Encryption Completed</h3>" + "<em><b>Your message is: </b></em>" + escapedMessage + page_footer
-
-        self.response.write(message)
+        self.response.write(content)
 
 
 app = webapp2.WSGIApplication([
-    ('/', Index),
-    ('/rotate', Rotate)
+    ('/', Index)
 ], debug=True)
